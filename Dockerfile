@@ -12,4 +12,5 @@ WORKDIR $HOME/app
 COPY --chown=user . $HOME/app
 EXPOSE 7860
 RUN pip install langflow==0.6.10 -U --user
+RUN pip list
 CMD ["python", "-m", "langflow", "run", "--host", "0.0.0.0", "--port", "7860"]
