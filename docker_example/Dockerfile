@@ -11,6 +11,6 @@ WORKDIR $HOME/app
 COPY --chown=user . $HOME/app
 
 # Install langflow using sudo
-RUN pip install langflow>=0.5.0 -U --user
+RUN sudo pip install langflow>=0.5.0 -U --user
 
 CMD ["python", "-m", "langflow", "run", "--host", "0.0.0.0", "--port", "7860"]
