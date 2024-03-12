@@ -1,26 +1,21 @@
 FROM python:3.10-slim
 
-# Install necessary system dependencies
-RUN apt-get update && apt-get install -y gcc g++ git make sudo && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Add a new user and grant sudo permissions
-RUN useradd -m -u 1000 user && usermod -aG sudo user
-
-# Switch to the newly created user
+RUN apt-get update && apt-get install gcc g++ git make -y
+RUN useradd -m -u 1000 user
+# Create the directory and set the permissions
+RUN mkdir -p /home/langflow && chown user:user /home/langflow
 USER user
-
-# Set environment variables
 ENV HOME=/home/user \
-    PATH=/home/user/.local/bin:$PATH
+	PATH=/home/user/.local/bin:$PATH \
+    LANGFLOW_DATABASE_URL=sqlite:////home/langflow/langflow.db \
+    LANGFLOW_AUTO_LOGIN=True 
+    
 
-# Set the working directory
 WORKDIR $HOME/app
 
-# Copy the application files into the container
 COPY --chown=user . $HOME/app
 
-# Install langflow using sudo
-RUN sudo pip install langflow>=0.5.0
+RUN pip install langflow==0.6.7a5 -U --user
 
-# Set the command to run when the container starts
-CMD ["python", "-m", "langflow", "run", "--host", "0.0.0.0", "--port", "7860"]
+
+CMD python -m langflow run --host 0.0.0.0 --port 7860 --remove-api-keys --log-level debug
