@@ -26,8 +26,6 @@ RUN apt-get update && apt-get install gcc g++ git make -y && apt-get clean \
 ENV HOME=/home/user \
     PATH=/home/user/.local/lib:$PATH
 
-RUN python -c "import sys; print(sys.path)"
-
 WORKDIR $HOME/app
 
 COPY . $HOME/app
@@ -35,9 +33,5 @@ COPY . $HOME/app
 EXPOSE 7860
 
 RUN pip install langflow==0.6.10
-
-RUN pip show langflow
-
-RUN python -c "import langflow"
 
 CMD ["python", "-m", "langflow", "run", "--host", "0.0.0.0", "--port", "7860"]
