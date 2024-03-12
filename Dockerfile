@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install gcc g++ git make -y && apt-get clean \
 RUN useradd -m -u 1000 user
 USER user
 ENV HOME=/home/user \
-	PATH=/home/user/.local/bin:$PATH
+	PATH=/home/user/.local/lib:$PATH
 RUN python -c "import sys; print(sys.path)"
 WORKDIR $HOME/app
 
